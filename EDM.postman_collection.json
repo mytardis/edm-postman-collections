@@ -1,0 +1,156 @@
+{
+	"variables": [],
+	"info": {
+		"name": "EDM",
+		"_postman_id": "64a5241b-8658-958e-11d2-7d0100d9284f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Empty",
+			"request": {
+				"url": "http://localhost:{{port}}/api/v1/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/graphql",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{AUTH_TOKEN}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "IntrospectionQuery __schema",
+			"request": {
+				"url": "http://localhost:{{port}}/api/v1/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/graphql",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        args {\n          ...InputValue\n        }\n        onOperation\n        onFragment\n        onField\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n        }\n      }\n    }\n  }\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "currentClient config",
+			"request": {
+				"url": "http://localhost:{{port}}/api/v1/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/graphql",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{AUTH_TOKEN}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "query MeQuery {\n  currentClient {\n    id\n    attributes\n      sources {\n      id\n      name\n      destinations {\n        base\n        id\n        host {\n          id\n        }\n      }\n    }\n    hosts {\n      id\n      settings\n      name\n    }\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getOrCreateSource",
+			"request": {
+				"url": "http://localhost:{{port}}/api/v1/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/graphql",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{AUTH_TOKEN}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "mutation {\n  getOrCreateSource(input: { clientMutationId: 1, source: { name: \"test source\", fstype: \"POSIX\" } } ) {\n    clientMutationId\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getOrCreateFile",
+			"request": {
+				"url": "http://localhost:{{port}}/api/v1/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{AUTH_TOKEN}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\": \n  \"mutation getOrCreateFile($input: GetOrCreateFileInput!) {\n    getOrCreateFile(input: $input) {\n            clientMutationId\n            file {\n            \tfilepath\n            }\n        }\n    }\",\n\t\"variables\": {\n\t  \"input\": {\n\t    \"clientMutationId\": \"123\",\n\t    \"source\": {\"name\": \"test source\"},\n\t    \"file\": {\n\t      \"filepath\": \"testfile3.txt\",\n\t      \"size\": 12,\n\t      \"mtime\": \"2013-06-05T06:40:25.000Z\",\n\t      \"atime\": \"2013-06-05T06:40:25.000Z\",\n\t      \"ctime\": \"2013-06-05T06:40:25.000Z\",\n\t      \"birthtime\": \"2013-06-05T06:40:25.000Z\",\n\t      \"mode\": 100644\n\t    }\n\t  }\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getOrCreateFile with file_transfers",
+			"request": {
+				"url": "http://localhost:{{port}}/api/v1/graphql",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{AUTH_TOKEN}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\": \n  \"mutation getOrCreateFile($input: GetOrCreateFileInput!) {\n    getOrCreateFile(input: $input) {\n            clientMutationId\n            file {\n            \tfilepath\n            \tfile_transfers {\n            \t\ttransfer_status\n            \t\tdestination {\n            \t\t\thost_id\n            \t\t}\n            \t}\n            }\n        }\n    }\",\n\t\"variables\": {\n\t  \"input\": {\n\t    \"clientMutationId\": \"123\",\n\t    \"source\": {\"name\": \"test source\"},\n\t    \"file\": {\n\t      \"filepath\": \"testfile3.txt\",\n\t      \"size\": 12,\n\t      \"mtime\": \"2013-06-05T06:40:25.000Z\",\n\t      \"atime\": \"2013-06-05T06:40:25.000Z\",\n\t      \"ctime\": \"2013-06-05T06:40:25.000Z\",\n\t      \"birthtime\": \"2013-06-05T06:40:25.000Z\",\n\t      \"mode\": 100644\n\t    }\n\t  }\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
